@@ -1,12 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: result-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: result-ingress 
 spec:
   rules:
-  - host: result.example.com
+  - host: "result.example.com"
     http:
       paths:
       - path: /
@@ -15,4 +13,4 @@ spec:
           service:
             name: result-service
             port:
-              number: 8080
+              number: 80
