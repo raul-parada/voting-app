@@ -22,6 +22,97 @@ The steps to run the app are the following:
 
 ![Screenshot from 2023-11-07 10-03-22](https://github.com/raul-parada/voting-app/assets/8438920/d7466bb2-6dba-4027-9dbb-685feec823d5)
 
-8) By executing the following command we can assure the microservices are accessible from outside `curl --resolve result.example.com:80:192.168.59.100 http://result.example.com`
+8) By executing the following command we can assure the microservices are accessible `curl --resolve result.example.com:80:192.168.59.100 http://result.example.com`
 
 ![Screenshot from 2023-11-07 10-05-21](https://github.com/raul-parada/voting-app/assets/8438920/42b21fd1-cd6a-41da-b459-b7edc1d46fa2)
+
+9) We must use minikube tunnel to check the current services available outside:
+
+`Status:	
+	machine: minikube
+	pid: 3203
+	route: 10.96.0.0/12 -> 192.168.59.100
+	minikube: Running
+	services: []
+    errors: 
+		minikube: no errors
+		router: no errors
+		loadbalancer emulator: no errors`
+
+
+10) As can be seen, no services are displayed within services. We have to apply changes in the already created result and voting services .yaml files. This change is to modify the NodePort to LoadBalancer. We `kubectl apply -f <name service file>` and if we check the tunnel output the services appear:
+
+`Status:	
+	machine: minikube
+	pid: 3203
+	route: 10.96.0.0/12 -> 192.168.59.100
+	minikube: Running
+	services: [result-service]
+    errors: 
+		minikube: no errors
+		router: no errors
+		loadbalancer emulator: no errors
+Status:	
+	machine: minikube
+	pid: 3203
+	route: 10.96.0.0/12 -> 192.168.59.100
+	minikube: Running
+	services: [result-service, voting-service]
+    errors: 
+		minikube: no errors
+		router: no errors
+		loadbalancer emulator: no errors`
+
+
+11) We check the external IPs and the ports to access outside:
+
+`$kubectl describe services result-service
+Name:                     result-service
+Namespace:                default
+Labels:                   app=demo-voting-app
+                          name=result-service
+Annotations:              <none>
+Selector:                 app=demo-voting-app,name=result-app-pod
+Type:                     LoadBalancer
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.110.1.59
+IPs:                      10.110.1.59
+LoadBalancer Ingress:     10.110.1.59
+Port:                     <unset>  80/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  30005/TCP
+Endpoints:                10.244.0.18:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+$kubectl describe services voting-service
+Name:                     voting-service
+Namespace:                default
+Labels:                   app=demo-voting-app
+                          name=voting-service
+Annotations:              <none>
+Selector:                 app=demo-voting-app,name=voting-app-pod
+Type:                     LoadBalancer
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.104.170.27
+IPs:                      10.104.170.27
+LoadBalancer Ingress:     10.104.170.27
+Port:                     <unset>  80/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  30004/TCP
+Endpoints:                10.244.0.21:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>`
+
+
+
+12) If we enter to a browser and enter the LoadBalancer Ingress IP with the port. In this case: 10.110.1.59:80 (result-service) and 10.104.170.27 (voting-service). We get the following result:
+
+
+![Screenshot from 2023-11-09 21-28-36](https://github.com/raul-parada/voting-app/assets/8438920/47248575-c94e-470b-809b-fdabd273f519)
+
+
+  
