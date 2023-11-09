@@ -27,8 +27,8 @@ The steps to run the app are the following:
 ![Screenshot from 2023-11-07 10-05-21](https://github.com/raul-parada/voting-app/assets/8438920/42b21fd1-cd6a-41da-b459-b7edc1d46fa2)
 
 9) We must use minikube tunnel to check the current services available outside:
-
-`Status:	
+```
+Status:	
 	machine: minikube
 	pid: 3203
 	route: 10.96.0.0/12 -> 192.168.59.100
@@ -38,11 +38,11 @@ The steps to run the app are the following:
 		minikube: no errors
 		router: no errors
 		loadbalancer emulator: no errors`
-
+```
 
 10) As can be seen, no services are displayed within services. We have to apply changes in the already created result and voting services .yaml files. This change is to modify the NodePort to LoadBalancer. We `kubectl apply -f <name service file>` and if we check the tunnel output the services appear:
-
-`Status:	
+```
+Status:	
 	machine: minikube
 	pid: 3203
 	route: 10.96.0.0/12 -> 192.168.59.100
@@ -61,12 +61,14 @@ Status:
     errors: 
 		minikube: no errors
 		router: no errors
-		loadbalancer emulator: no errors`
+		loadbalancer emulator: no errors
+```
 
 
-11) We check the external IPs and the ports to access outside:
+12) We check the external IPs and the ports to access outside:
 
-`$kubectl describe services result-service
+```
+$kubectl describe services result-service
 Name:                     result-service
 Namespace:                default
 Labels:                   app=demo-voting-app
@@ -105,7 +107,8 @@ NodePort:                 <unset>  30004/TCP
 Endpoints:                10.244.0.21:80
 Session Affinity:         None
 External Traffic Policy:  Cluster
-Events:                   <none>`
+Events:                   <none>
+```
 
 
 
