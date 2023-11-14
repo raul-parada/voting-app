@@ -5,7 +5,7 @@ This app is part of an assignment for the BTH master
 The steps to run the app are the following:
 1) Clone this repository. In Linux just use the `git clone` command
 2) Install and start minikube. Add the service Ingress
-3) Create all deployment and services .yaml files in this way: `kubectl create -f redis-deploy.yaml` with the output `deployment.apps/redis-deploy created`.
+3) Create all deployment and services .yaml files in this way (e.g.): `kubectl create -f redis-deploy.yaml` with the output `deployment.apps/redis-deploy created`. Note: You should perform the same procedure with the rest of pod, deploy and service files.
 4) Check all deployments and services are ready by executing `kubectl get pods,svc` with the following result
 ![Screenshot from 2023-11-07 08-51-27](https://github.com/raul-parada/voting-app/assets/8438920/eeb8dfb9-e986-40c3-a9d3-b79a73a510b7)
 
